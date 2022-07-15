@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QuackieChattie</string>
+    <string name="username">Username:</string>
 </resources>
