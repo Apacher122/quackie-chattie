@@ -70,6 +70,7 @@ class QuackieActivity : AppCompatActivity(), View.OnClickListener {
         mSock.on("userLeft", onLeave)
     }
 
+
     var onLeave = Emitter.Listener {
         val user = it[0] as String
         val chat: Chat = Chat(user, "", "", Notification.LEFT.index)
