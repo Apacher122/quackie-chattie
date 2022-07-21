@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id "org.jetbrains.kotlin.kapt"
 }
 
 android {
@@ -57,19 +56,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha03'
 
-    // Hilt stuff
-    implementation 'com.google.dagger:hilt-android:2.42'
-    kapt 'com.google.dagger:hilt-compiler:2.42'
-    kapt("groupId:artifactId:version")
-
-    // For instrumentation tests
-    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.42'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.42'
-
-    // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.42'
-    kaptTest 'com.google.dagger:hilt-compiler:2.42'
-
 
     apply plugin: 'com.android.application'
     apply plugin: 'kotlin-android'
@@ -81,8 +67,4 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-}
-
-kapt {
-    correctErrorTypes true
 }

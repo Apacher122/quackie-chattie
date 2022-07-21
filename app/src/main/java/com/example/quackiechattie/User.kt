@@ -2,27 +2,34 @@ package com.example.quackiechattie
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.provider.Settings.Global.getString
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
-class User @Inject constructor(private val encryptedSharedPreferences: SharedPreferences) {
-    private lateinit var username: String
+object User {
+    private lateinit var uName: String
     private lateinit var userID: String
     private lateinit var user: FirebaseUser
+    private lateinit var auth: FirebaseAuth
     private var isLoggedIn: Boolean = false
     private var firstTime: Boolean = false
 
-    @Synchronized
-    fun getFirstTimeStatus(): Boolean {
-        return firstTime
-    }
+
 
     @Synchronized
-    fun setFireBaseUser(u: FirebaseUser) {
-        user = u
+    fun setFireBaseUser(u: FirebaseUser?): Boolean {
+        if (u != null) {
+            user = u
+            return setUserID(user)
+        }
     }
 
     @Synchronized
@@ -30,16 +37,6 @@ class User @Inject constructor(private val encryptedSharedPreferences: SharedPre
         return user
     }
 
-    @Synchronized
-    fun login() {
-        isLoggedIn = true
-        firstTime = false
-    }
-
-    @Synchronized
-    fun checkLoginStatus(): Boolean {
-        return isLoggedIn
-    }
 
     fun logout() {
         isLoggedIn = false
@@ -47,21 +44,24 @@ class User @Inject constructor(private val encryptedSharedPreferences: SharedPre
 
     @Synchronized
     fun setUser(userName: String) {
-        username = userName
-        kotlin.runCatching {
-            encryptedSharedPreferences.edit().putString("username", userName)
-        }
+        uName = userName
     }
 
     @Synchronized
     fun getUsername(): String {
-        username = encryptedSharedPreferences.getString("username", "").toString()
-        return username
+        return uName
     }
 
     @Synchronized
-    fun setUserID(id: String) {
-        userID = id
+    fun setUserID(user: FirebaseUser?): Boolean {
+        val id = user?.uid
+        return if (id != null) {
+            Log.d("USER", id)
+            userID = id
+            true
+        } else {
+            false
+        }
     }
 
     @Synchronized

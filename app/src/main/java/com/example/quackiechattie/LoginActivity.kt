@@ -6,7 +6,6 @@ package com.example.quackiechattie
 
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,15 +20,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.Socket
 import kotlinx.android.synthetic.main.activity_menu.*
 
-@AndroidEntryPoint
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
     val gson: Gson = Gson()
     lateinit var mSock: Socket;
-    lateinit var sharedPreferences: SharedPreferences
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
@@ -110,9 +106,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     // [END signin]
 
     private fun updateUI(user: FirebaseUser?) {
-        var uid = user?.uid
-        if (uid != null) {
-            Log.d("USER", uid)
+        val success = User.setFireBaseUser(user)
+        val displayname = user?.displayName
+        if (success) {
+            if (displayname != null) {
+                Log.d("USER", displayname)
+                val intent = Intent(this, ChatRoomsActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+        } else {
+            Log.d("FirebaseUser", "Method: setFireBaseUser() failed.")
         }
     }
 
