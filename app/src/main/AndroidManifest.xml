@@ -14,7 +14,7 @@
         android:theme="@style/Theme.QuackieChattie"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".QuackieActivity" />
+        <activity android:name=".ChatRoomsActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity"
             android:exported="true">

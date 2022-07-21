@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QuackieChattie</string>
     <string name="username">Username:</string>
+    <string name="firebase_client_id">43697274702-ok86ni1loccg4lq3oqr6nm9j0qa500vv.apps.googleusercontent.com</string>
 </resources>

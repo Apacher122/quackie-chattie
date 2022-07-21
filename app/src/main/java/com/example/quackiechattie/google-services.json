@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "43697274702",
+    "project_id": "quackie-chattie",
+    "storage_bucket": "quackie-chattie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43697274702:android:f24657fe28f8b92659a81f",
+        "android_client_info": {
+          "package_name": "com.example.quackiechattie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43697274702-ecfmvm3lmj0qhjg2bqd2vfgqsstbc8sp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quackiechattie",
+            "certificate_hash": "4328a988485c4b662afc1d5d6fa1a0a14b67c2bb"
+          }
+        },
+        {
+          "client_id": "43697274702-ok86ni1loccg4lq3oqr6nm9j0qa500vv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAEkp9S_e85JKhd8TzvFLTyLwwGx_9zkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43697274702-ok86ni1loccg4lq3oqr6nm9j0qa500vv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

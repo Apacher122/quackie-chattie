@@ -3,7 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_menu.xml" value="0.25" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_menu.xml" value="0.36820652173913043" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_room.xml" value="0.1" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_roomslist.xml" value="0.18697916666666667" />
