@@ -3,8 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_menu.xml" value="0.36820652173913043" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_menu.xml" value="0.25" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_room.xml" value="0.1" />
         <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_roomslist.xml" value="0.18697916666666667" />
@@ -27,6 +26,9 @@
         <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_chat.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_me.xml" value="0.25" />
         <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_you.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_room.xml" value="0.10869565217391304" />
+        <entry key="app/src/main/res/layout/activity_roomslist.xml" value="0.25" />
       </map>
     </option>
   </component>

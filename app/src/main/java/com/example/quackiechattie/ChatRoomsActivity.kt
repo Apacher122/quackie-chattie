@@ -4,18 +4,15 @@
 
 package com.example.quackiechattie
 
-import android.media.MediaPlayer
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
 import com.google.gson.Gson
 import io.socket.client.Socket
-import io.socket.emitter.Emitter
-import kotlinx.android.synthetic.main.activity_room.*
-import com.example.quackiechattie.model.Notification
-import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.activity_roomslist.*
 import kotlin.Exception
 
 
@@ -25,35 +22,47 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var mSock: Socket;
     lateinit var uName: String;
 
-
     val gson: Gson = Gson()
 
     // RecyclerView stuffs
     val rooms: ArrayList<Rooms> = arrayListOf();
-    lateinit var quackieAdapter: QuackieAdapter
+    lateinit var chatRoomsActivityAdapter: ChatRoomsActivityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        uName = User.getUsername()
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_room)
+        setContentView(R.layout.activity_roomslist)
 
-        send.setOnClickListener(this)
-        leave.setOnClickListener(this)
+        join.setOnClickListener(this)
+        logoutButton.setOnClickListener(this)
 
         mSock = SocketHandler.getSocket();
-
-        try {
-            uName = intent.getStringExtra("uName")!!
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-//        mSock.on(Socket.EVENT_CONNECT, onConnect)
-//        mSock.on("userJoined", onUser)
-//        mSock.on("update", onUpdate)
-//        mSock.on("userLeft", onLeave)
     }
 
+    override fun onClick(p0: View?) {
+       when(p0?.id) {
+           R.id.join -> joinRoom()
+           R.id.logoutButton -> logout()
+       }
+    }
+
+    private fun joinRoom() {
+        val uName = User.getUsername()
+        val rName = rName.text.toString()
+
+        if(!rName.isNullOrBlank()&&!uName.isNullOrBlank()) {
+            val intent = Intent(this, ChatActvity::class.java)
+            intent.putExtra("uName", uName)
+            intent.putExtra("rName", rName)
+            val data = Rooms(rName, uName)
+            val jData = gson.toJson(data)
+            mSock.emit("CREATE_OR_JOIN", jData)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Please enter or join a room", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 //    var onLeave = Emitter.Listener {
 //        val user = it[0] as String
@@ -104,12 +113,7 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
 //        }
 //    }
 //
-    override fun onClick(p0: View?) {
-        when (p0!!.id) {
-//            R.id.send -> sendMessage()
-            R.id.leave -> onDestroy()
-        }
-    }
+
 //
 //    override fun onDestroy() {
 //        super.onDestroy()

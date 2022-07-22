@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-class QuackieAdapter(val context: Context, val chats: ArrayList<Chat>) : RecyclerView.Adapter<QuackieAdapter.ViewHolder>() {
+class ChatRoomsActivityAdapter(val context: Context, val chats: ArrayList<Chat>) : RecyclerView.Adapter<ChatRoomsActivityAdapter.ViewHolder>() {
     val SENT = 0
     val RECV = 1
     val JOIN = 2

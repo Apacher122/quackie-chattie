@@ -1,18 +1,10 @@
 package com.example.quackiechattie
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.provider.Settings.Global.getString
 import android.util.Log
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
-import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import javax.inject.Inject
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+
 
 object User {
     private lateinit var uName: String
@@ -26,10 +18,12 @@ object User {
 
     @Synchronized
     fun setFireBaseUser(u: FirebaseUser?): Boolean {
+        var status = false
         if (u != null) {
             user = u
-            return setUserID(user)
+             status = setUserID(user)
         }
+        return status
     }
 
     @Synchronized
@@ -44,11 +38,25 @@ object User {
 
     @Synchronized
     fun setUser(userName: String) {
-        uName = userName
+        val profileUpdates = userProfileChangeRequest {
+            displayName = userName
+        }
+
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("SetUser", "User profile updated.")
+                } else {
+                    Log.d("SetUser", "Failed to update profile.")
+                }
+            }
     }
+
+
 
     @Synchronized
     fun getUsername(): String {
+        uName = user.displayName.toString()
         return uName
     }
 

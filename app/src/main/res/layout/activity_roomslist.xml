@@ -15,12 +15,44 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/rName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar"
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+    <EditText
+        android:id="@+id/rName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/chat_edittext_bg"
+        android:ems="10"
+        android:fontFamily="@font/modeseven"
+        android:hint="CREATE OR JOIN A NEW ROOM"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/cyan"
+        android:textColorHint="@color/cyan"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toStartOf="@+id/join"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/join"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/sendbutton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/topbar"
@@ -31,7 +63,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/leave"
+            android:id="@+id/logoutButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"

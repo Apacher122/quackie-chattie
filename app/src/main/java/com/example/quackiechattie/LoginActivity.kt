@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,6 +22,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_menu.*
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
@@ -111,8 +113,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         if (success) {
             if (displayname != null) {
                 Log.d("USER", displayname)
-                val intent = Intent(this, ChatRoomsActivity::class.java)
-                startActivity(intent)
+                val uName = User.getUsername()
+                val uid = User.getUserID()
+                val data = initData(uName, uid)
+                val jData = gson.toJson(data)
+                mSock.emit("checkUsername", jData)
+                mSock.on("NEW_USER", userFailedLogin)
+                mSock.on("USER_EXISTS", userLoginSuccess)
             } else {
                 val intent = Intent(this, RegisterActivity::class.java)
                 startActivity(intent)
@@ -120,6 +127,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             Log.d("FirebaseUser", "Method: setFireBaseUser() failed.")
         }
+    }
+
+    private var userFailedLogin = Emitter.Listener {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+    }
+
+    private var userLoginSuccess = Emitter.Listener {
+        val intent = Intent(this, ChatRoomsActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {

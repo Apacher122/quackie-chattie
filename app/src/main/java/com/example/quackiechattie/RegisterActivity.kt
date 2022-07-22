@@ -17,7 +17,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     val TAG = RegisterActivity::class.java.simpleName
     lateinit var mSock: Socket;
     lateinit var uName: String;
-    lateinit var pWord: String;
+    lateinit var uid: String;
 
     private val gson: Gson = Gson()
 
@@ -33,26 +33,28 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private fun signUp() {
         // connections
         uName = regEnterUname.text.toString()
+        uid = User.getUserID()
 
         if(!uName.isNullOrBlank()) {
-            val intent = Intent(this, LoginActivity::class.java)
-            val data = initData(uName)
+            val data = initData(uName, uid)
             val jData = gson.toJson(data)
 
             mSock.emit("checkUsername", jData)
             mSock.on("NEW_USER", addUserName)
             mSock.on("USER_EXISTS", warnUserExists)
-            startActivity(intent)
         } else {
             Toast.makeText(this, "Please Enter a Username", Toast.LENGTH_SHORT).show()
         }
     }
 
     private var addUserName = Emitter.Listener {
-        val uid = User.getUserID()
+        Log.d("addUserName", "Entering function")
         val data = initData(uName, uid)
         val jData = gson.toJson(data)
+        User.setUser(uName)
+        val intent = Intent(this, ChatRoomsActivity::class.java)
         mSock.emit("signUp", jData)
+        startActivity(intent)
     }
 
     private var warnUserExists = Emitter.Listener {
