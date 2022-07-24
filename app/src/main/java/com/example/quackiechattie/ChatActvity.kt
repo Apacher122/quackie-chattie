@@ -1,6 +1,7 @@
 package com.example.quackiechattie
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -53,6 +54,13 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
         mSock.on("newMessage", onNewMessage)
         mSock.emit("getMessages", jData)
         mSock.on("populateMessages", populateMessages)
+        mSock.on("update", onUpdate)
+    }
+
+    var onUpdate = Emitter.Listener {
+        val chat: Chat = gson.fromJson(it[0].toString(), Chat::class.java)
+        chat.viewType = Notifs.RECV.index
+        addToRecyclerView(chat, false)
     }
 
     var populateMessages = Emitter.Listener {
@@ -62,37 +70,40 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
         val uName = User.getUsername()
         if (messages.sender == uName) {
             val chat = Chat(messages.sender, messages.message_text, messages.room_name, Notifs.SENT.index, false)
-            addToRecyclerView(chat)
+            addToRecyclerView(chat, false)
         } else {
             val chat = Chat(messages.sender, messages.message_text, messages.room_name, Notifs.RECV.index, false)
-            addToRecyclerView(chat)
+            addToRecyclerView(chat, false)
         }
     }
 
     var onUser = Emitter.Listener {
         val user = it[0] as String
         val chat = Chat(user, "", rName, Notifs.JOIN.index, false)
-        addToRecyclerView(chat)
+        addToRecyclerView(chat, false)
     }
 
     var onLeave = Emitter.Listener {
         val user = it[0] as String
         val chat = Chat(user, "", "", Notifs.LEFT.index, false)
-        addToRecyclerView(chat)
+        addToRecyclerView(chat, false)
     }
 
     var onNewMessage = Emitter.Listener {
         val chat: Chat = gson.fromJson(it[0].toString(), Chat::class.java)
         chat.viewType = Notifs.RECV.index
-        addToRecyclerView(chat)
+        addToRecyclerView(chat, false)
     }
 
 
-    private fun addToRecyclerView(chat: Chat) {
+    private fun addToRecyclerView(chat: Chat, newMessage: Boolean) {
         runOnUiThread {
+            var newMessage = newMessage
             chats.add(chat)
             chatActivityAdapter.notifyItemInserted(chats.size)
-            editText.setText("")
+            if (newMessage) {
+                editText.setText("")
+            }
             recyclerView.scrollToPosition(chats.size - 1)
         }
     }
@@ -106,13 +117,15 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendMessage() {
+        var mediaPlayer = MediaPlayer.create(this, R.raw.quack)
+        mediaPlayer.start()
         val msg = editText.text.toString()
         if (msg.isNotEmpty()) {
             val send = Send(uName, msg, rName)
             val jData = gson.toJson(send)
             mSock.emit("newMessage", jData)
             val chat = Chat(uName, msg, rName, Notifs.SENT.index, true)
-            addToRecyclerView(chat)
+            addToRecyclerView(chat, true)
         }
     }
 
