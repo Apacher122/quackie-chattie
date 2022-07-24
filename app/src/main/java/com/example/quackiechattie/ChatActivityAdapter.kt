@@ -19,13 +19,13 @@ class ChatActivityAdapter(val context: Context, val chats: ArrayList<Chat>) : Re
                 view = LayoutInflater.from(context).inflate(R.layout.row_me, parent, false)
             }
             RECV -> {
-                view = LayoutInflater.from(context).inflate((R.layout.row_you, parent, false))
+                view = LayoutInflater.from(context).inflate(R.layout.row_you, parent, false)
             }
             JOIN -> {
                 view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
             }
             LEFT -> {
-                view - LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
+                view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
             }
         }
 

@@ -1,11 +1,11 @@
 package com.example.quackiechattie
 
-import android.app.Notification
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -38,12 +38,35 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
             e.printStackTrace()
         }
 
+        val data = Rooms("", rName, "")
+        val jData = gson.toJson(data)
+        Log.d(TAG, jData.toString())
         chatActivityAdapter = ChatActivityAdapter(this, chats)
         recyclerView.adapter = chatActivityAdapter
 
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+        mSock = SocketHandler.getSocket()
         mSock.on("userJoined", onUser)
         mSock.on("userLeft", onLeave)
         mSock.on("newMessage", onNewMessage)
+        mSock.emit("getMessages", jData)
+        mSock.on("populateMessages", populateMessages)
+    }
+
+    var populateMessages = Emitter.Listener {
+        Log.d(TAG, "Trying to Populate Messages")
+        val messages: Messages = gson.fromJson(it[0].toString(), Messages::class.java)
+        Log.d(TAG, messages.toString())
+        val uName = User.getUsername()
+        if (messages.sender == uName) {
+            val chat = Chat(messages.sender, messages.message_text, messages.room_name, Notifs.SENT.index, false)
+            addToRecyclerView(chat)
+        } else {
+            val chat = Chat(messages.sender, messages.message_text, messages.room_name, Notifs.RECV.index, false)
+            addToRecyclerView(chat)
+        }
     }
 
     var onUser = Emitter.Listener {
@@ -78,7 +101,7 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.send -> sendMessage()
-            R.id.leave -> onDestroy()
+            R.id.leave -> goBack()
         }
     }
 
@@ -91,5 +114,10 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
             val chat = Chat(uName, msg, rName, Notifs.SENT.index, true)
             addToRecyclerView(chat)
         }
+    }
+
+    private fun goBack() {
+        val intent = Intent(this, ChatRoomsActivity::class.java)
+        startActivity(intent)
     }
 }

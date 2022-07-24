@@ -5,22 +5,26 @@
 package com.example.quackiechattie
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_roomslist.*
-import kotlin.Exception
 
 
-class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
+class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener, ChatRoomsActivityAdapter.OnItemClickListener {
     val TAG = ChatRoomsActivity::class.java.simpleName
 
     lateinit var mSock: Socket;
     lateinit var uName: String;
+    lateinit var uid: String;
 
     val gson: Gson = Gson()
 
@@ -29,15 +33,33 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var chatRoomsActivityAdapter: ChatRoomsActivityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        uName = User.getUsername()
-        Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_roomslist)
+
+        uName = User.getUsername()
+        uid = User.getUserID()
+        val data = initData(uName, uid)
+        val jData = gson.toJson(data)
+
+        chatRoomsActivityAdapter = ChatRoomsActivityAdapter(this, rooms, this)
+        roomList.adapter = chatRoomsActivityAdapter
+
+        val layoutManager = LinearLayoutManager(this)
+        roomList.layoutManager = layoutManager
+
 
         join.setOnClickListener(this)
         logoutButton.setOnClickListener(this)
 
         mSock = SocketHandler.getSocket();
+        mSock.emit("getRooms", jData)
+        mSock.on("populate_chat_list", populateChatList)
+    }
+
+    var populateChatList = Emitter.Listener {
+        val room: Rooms = gson.fromJson(it[0].toString(), Rooms::class.java)
+        Log.d("ROOMS", room.toString())
+        addToRecyclerView(room)
     }
 
     override fun onClick(p0: View?) {
@@ -45,6 +67,30 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
            R.id.join -> joinRoom()
            R.id.logoutButton -> logout()
        }
+    }
+
+    override fun onItemClick(position: Int) {
+        val clickedItem = rooms[position]
+        val uName = User.getUsername()
+        val rName = clickedItem.room_name
+        if(!rName.isNullOrBlank()&&!uName.isNullOrBlank()) {
+            Toast.makeText(this, "Joining $rName", Toast.LENGTH_SHORT)
+            val intent = Intent(this, ChatActvity::class.java)
+            intent.putExtra("uName", uName)
+            intent.putExtra("rName", rName)
+            val data = Rooms("", rName, uName)
+            val jData = gson.toJson(data)
+            mSock.emit("joinRoom", jData)
+
+            startActivity(intent)
+        }
+    }
+
+    private fun logout() {
+        Toast.makeText(this, "Logging out!", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, LoginActivity::class.java)
+        Firebase.auth.signOut()
+        startActivity(intent)
     }
 
     private fun joinRoom() {
@@ -55,71 +101,25 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener {
             val intent = Intent(this, ChatActvity::class.java)
             intent.putExtra("uName", uName)
             intent.putExtra("rName", rName)
-            val data = Rooms(rName, uName)
+            val data = Rooms("", rName, uName)
             val jData = gson.toJson(data)
-            mSock.emit("CREATE_OR_JOIN", jData)
+            mSock.emit("joinRoom", jData)
+
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Please enter or join a room", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please create or join a room", Toast.LENGTH_SHORT).show()
         }
     }
 
-//    var onLeave = Emitter.Listener {
-//        val user = it[0] as String
-//        val chat: Chat = Chat(user, "", "", Notification.LEFT.index)
-//        addToRecyclerView(chat)
-//    }
-//
-//    var onUpdate = Emitter.Listener {
-//        val chat: Chat = gson.fromJson(it[0].toString(), Chat::class.java)
-//        chat.viewType = Notification.RECV.index
-//        addToRecyclerView(chat)
-//    }
-//
-//    var onConnect = Emitter.Listener {
-//        val data = initData(uName, password)
-//        val jData = gson.toJson(data)
-//        mSock.emit("subscribe", jData)
-//    }
-//
-//
-//    var onUser = Emitter.Listener {
-//        val user = it[0] as String
-//        val chat = Chat(user, "", rName, Notification.JOIN.index)
-//        addToRecyclerView(chat)
-//        Log.d(TAG, "onUser Triggered")
-//    }
-//
-//    private fun addToRecyclerView(chat: Chat) {
-//        runOnUiThread {
-//            chats.add(chat)
-//            quackieAdapter.notifyItemInserted(chats.size)
-//            editText.setText("")
-//            recyclerView.scrollToPosition(chats.size - 1)
-//        }
-//    }
-//
-//    private fun sendMessage() {
-//        val msg = editText.text.toString()
-//        if (msg.isNotEmpty()) {
-//            var mediaPlayer = MediaPlayer.create(this, R.raw.quack)
-//            mediaPlayer.start()
-//            val send = Send(uName, msg, rName)
-//            val jData = gson.toJson(send)
-//            mSock.emit("newMessage", jData)
-//
-//            val chat = Chat(uName, msg, rName, Notification.SENT.index)
-//            addToRecyclerView(chat)
-//        }
-//    }
-//
+    private fun addToRecyclerView(room: Rooms) {
+        runOnUiThread{
+            Log.d(TAG, room.toString())
+            rooms.add(room)
+            Log.d(TAG, rooms.toString())
+            Log.d(TAG, rooms.size.toString())
+            chatRoomsActivityAdapter.notifyItemInserted(rooms.size)
+//            recyclerView.scrollToPosition(rooms.size - 1)
+        }
+    }
 
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        val data = initData(uName, password)
-//        val jData = gson.toJson(data)
-//        mSock.emit("unsubscribe", jData)
-//        mSock.disconnect()
-//    }
 }

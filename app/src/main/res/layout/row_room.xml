@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start"
     android:background="#192734"
+    android:gravity="start"
     android:orientation="vertical">
 
 
     <TextView
-        android:id="@+id/roomNameButton"
+        android:id="@+id/roomName"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
@@ -19,7 +19,7 @@
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
         android:paddingBottom="5dp"
-        android:text="Room Name"
+        android:text="@string/room_name"
         android:textColor="@color/mainRed"
         android:textSize="28sp" />
         />

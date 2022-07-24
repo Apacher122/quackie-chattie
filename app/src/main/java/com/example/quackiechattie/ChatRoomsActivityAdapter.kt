@@ -12,73 +12,45 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-class ChatRoomsActivityAdapter(val context: Context, val chats: ArrayList<Chat>) : RecyclerView.Adapter<ChatRoomsActivityAdapter.ViewHolder>() {
-    val SENT = 0
-    val RECV = 1
-    val JOIN = 2
-    val LEFT = 3
+class ChatRoomsActivityAdapter(val context: Context, val rooms: ArrayList<Rooms>, val listener: OnItemClickListener) : RecyclerView.Adapter<ChatRoomsActivityAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("chatlist size", chats.size.toString())
+        Log.d("chatlist size", rooms.size.toString())
         var view: View? = null
-        when (viewType) {
-            0 -> {
-                view = LayoutInflater.from(context).inflate(R.layout.row_me, parent, false)
-                Log.d("me inflating","viewType : ${viewType}")
-            }
-            1 -> {
-                view = LayoutInflater.from(context).inflate(R.layout.row_you, parent, false)
-                Log.d("you inflating", "viewType : ${viewType}")
-            }
-            2 -> {
-                view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
-                Log.d("join or leave", "viewType : ${viewType}")
-            }
-            3 -> {
-                view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
-                Log.d("join or leave", "viewType : ${viewType}")
-            }
-        }
+
+        view = LayoutInflater.from(context).inflate(R.layout.row_room, parent, false)
 
         return ViewHolder(view!!)
     }
 
     override fun getItemCount(): Int {
-        return chats.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return chats[position].viewType
+        return rooms.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = chats[position]
-        val uName = data.uName;
-        val content = data.content;
-        val viewType = data.viewType;
+        val data = rooms[position]
+        val room_name = data.room_name
+        Log.d("ROOM_NAME", room_name)
+        holder.roomName.setText(room_name)
+    }
 
-        when(viewType) {
-            SENT -> {
-                holder.msg.setText(content)
-            }
-            RECV -> {
-                holder.uName.setText(uName)
-                holder.msg.setText(content)
-            }
-            JOIN -> {
-                val temp = "${uName} quacked in"
-                holder.text.setText(temp)
-            }
-            LEFT -> {
-                val temp = "${uName} quacked out"
-                holder.text.setText(temp)
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView),
+    View.OnClickListener {
+        val roomName: TextView = itemView.findViewById(R.id.roomName)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            val position = absoluteAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
             }
         }
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val uName = itemView.findViewById<TextView>(R.id.uName)
-        val msg = itemView.findViewById<TextView>(R.id.message)
-        val text = itemView.findViewById<TextView>(R.id.text)
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 }

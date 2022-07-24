@@ -1,17 +1,15 @@
 package com.example.quackiechattie
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlin.Exception
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     val TAG = RegisterActivity::class.java.simpleName
