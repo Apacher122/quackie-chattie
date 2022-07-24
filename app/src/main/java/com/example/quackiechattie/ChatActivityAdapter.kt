@@ -1,42 +1,31 @@
-/*
-    Adapter for RecyclerView
- */
 package com.example.quackiechattie
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
-
-class QuackieAdapter(val context: Context, val chats: ArrayList<Chat>) : RecyclerView.Adapter<QuackieAdapter.ViewHolder>() {
+class ChatActivityAdapter(val context: Context, val chats: ArrayList<Chat>) : RecyclerView.Adapter<ChatActivityAdapter.ViewHolder>() {
     val SENT = 0
     val RECV = 1
     val JOIN = 2
     val LEFT = 3
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("chatlist size", chats.size.toString())
         var view: View? = null
         when (viewType) {
-            0 -> {
+            SENT -> {
                 view = LayoutInflater.from(context).inflate(R.layout.row_me, parent, false)
-                Log.d("me inflating","viewType : ${viewType}")
             }
-            1 -> {
+            RECV -> {
                 view = LayoutInflater.from(context).inflate(R.layout.row_you, parent, false)
-                Log.d("you inflating", "viewType : ${viewType}")
             }
-            2 -> {
+            JOIN -> {
                 view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
-                Log.d("join or leave", "viewType : ${viewType}")
             }
-            3 -> {
+            LEFT -> {
                 view = LayoutInflater.from(context).inflate(R.layout.notifs, parent, false)
-                Log.d("join or leave", "viewType : ${viewType}")
             }
         }
 
@@ -44,7 +33,7 @@ class QuackieAdapter(val context: Context, val chats: ArrayList<Chat>) : Recycle
     }
 
     override fun getItemCount(): Int {
-        return chats.size
+       return chats.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -53,7 +42,7 @@ class QuackieAdapter(val context: Context, val chats: ArrayList<Chat>) : Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = chats[position]
-        val uName = data.uName;
+        val uName = data.uName
         val content = data.content;
         val viewType = data.viewType;
 
