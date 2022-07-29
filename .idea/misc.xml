@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/drawable/chat_edittext_bg.xml" value="0.139" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/drawable/chat_user_bg.xml" value="0.139" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/drawable/room_create_bg.xml" value="0.139" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_menu.xml" value="0.25" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_room.xml" value="0.25" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/activity_roomslist.xml" value="0.33" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/notifs.xml" value="0.18802083333333333" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/row_chat.xml" value="0.1" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/row_me.xml" value="0.1" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/row_room.xml" value="0.18697916666666667" />
+        <entry key="..\:/Desktop/GitHubProjects/quackie-chattie/app/src/main/res/layout/row_you.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/chat_edittext_bg.xml" value="0.196" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/chat_partner_bg.xml" value="0.2985" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/chat_user_bg.xml" value="0.2985" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2985" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/left_arrow.xml" value="0.196" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/drawable/start_button_bg.xml" value="0.2985" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/activity_enter.xml" value="0.33" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/activity_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/activity_room.xml" value="0.1" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/notifs.xml" value="0.1" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_chat.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_me.xml" value="0.25" />
+        <entry key="..\:/Users/Apare/AndroidStudioProjects/QuackieChattie/app/src/main/res/layout/row_you.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_room.xml" value="0.10869565217391304" />
+        <entry key="app/src/main/res/layout/activity_roomslist.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
