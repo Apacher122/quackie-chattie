@@ -44,10 +44,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         auth = Firebase.auth
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
-        mSock = SocketHandler.getSocket()
-
         loginButton.setOnClickListener(this)
     }
 
@@ -107,6 +103,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     // [END signin]
 
     private fun updateUI(user: FirebaseUser?) {
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
+        mSock = SocketHandler.getSocket()
         val success = User.setFireBaseUser(user)
         val displayname = user?.displayName
         if (success) {
@@ -129,13 +128,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private var userFailedLogin = Emitter.Listener {
+        closeListeners()
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 
     private var userLoginSuccess = Emitter.Listener {
+        closeListeners()
         val intent = Intent(this, ChatRoomsActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun closeListeners() {
+        mSock.off("NEW_USER")
+        mSock.off("USER_EXISTS")
     }
 
     companion object {

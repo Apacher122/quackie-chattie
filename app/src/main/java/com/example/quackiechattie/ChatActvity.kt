@@ -131,6 +131,15 @@ class ChatActvity : AppCompatActivity(), View.OnClickListener {
 
     private fun goBack() {
         val intent = Intent(this, ChatRoomsActivity::class.java)
+        closeListeners()
         startActivity(intent)
+    }
+
+    private fun closeListeners(){
+        mSock.off("userJoined")
+        mSock.off("userLeft")
+        mSock.off("newMessage")
+        mSock.off("populateMessages")
+        mSock.off("update")
     }
 }

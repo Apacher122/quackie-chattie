@@ -52,6 +52,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         User.setUser(uName)
         val intent = Intent(this, ChatRoomsActivity::class.java)
         mSock.emit("signUp", jData)
+        closeListeners()
         startActivity(intent)
     }
 
@@ -63,5 +64,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         when (p0!!.id) {
             R.id.submitButton -> signUp()
         }
+    }
+
+    private fun closeListeners() {
+        mSock.off("NEW_USER")
+        mSock.off("USER_EXISTS")
     }
 }

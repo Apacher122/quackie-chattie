@@ -90,6 +90,8 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener, ChatRoomsAc
         Toast.makeText(this, "Logging out!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, LoginActivity::class.java)
         Firebase.auth.signOut()
+        closeListeners()
+        mSock.disconnect()
         startActivity(intent)
     }
 
@@ -104,7 +106,7 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener, ChatRoomsAc
             val data = Rooms("", rName, uName)
             val jData = gson.toJson(data)
             mSock.emit("joinRoom", jData)
-
+            closeListeners()
             startActivity(intent)
         } else {
             Toast.makeText(this, "Please create or join a room", Toast.LENGTH_SHORT).show()
@@ -118,8 +120,12 @@ class ChatRoomsActivity : AppCompatActivity(), View.OnClickListener, ChatRoomsAc
             Log.d(TAG, rooms.toString())
             Log.d(TAG, rooms.size.toString())
             chatRoomsActivityAdapter.notifyItemInserted(rooms.size)
-//            recyclerView.scrollToPosition(rooms.size - 1)
+//            recyclerView.scrollToPosition(rooms.size - 1) /* do I even need this? */
         }
+    }
+
+    private fun closeListeners(){
+        mSock.off("populate_chat_list")
     }
 
 }

@@ -1,19 +1,13 @@
 package com.example.quackiechattie
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-
 
 object User {
     private lateinit var uName: String
     private lateinit var userID: String
     private lateinit var user: FirebaseUser
-    private lateinit var auth: FirebaseAuth
-    private var isLoggedIn: Boolean = false
-    private var firstTime: Boolean = false
-
 
 
     @Synchronized
@@ -24,16 +18,6 @@ object User {
              status = setUserID(user)
         }
         return status
-    }
-
-    @Synchronized
-    fun getFireBaseUser(): FirebaseUser {
-        return user
-    }
-
-
-    fun logout() {
-        isLoggedIn = false
     }
 
     @Synchronized
@@ -51,8 +35,6 @@ object User {
                 }
             }
     }
-
-
 
     @Synchronized
     fun getUsername(): String {
